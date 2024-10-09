@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String     @id @default(cuid())
+  name      String
+  email     String     @unique
+  password  String
+  role      String     @default("EMPLOYEE")
+  timesheets Timesheet[]
+}
+
+model Timesheet {
+  id        String   @id @default(cuid())
+  date      DateTime
+  hours     Float
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
